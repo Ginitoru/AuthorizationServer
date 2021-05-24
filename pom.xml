@@ -20,7 +20,7 @@
     <name>authorization-server</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>15</java.version>
         <spring-cloud.version>Hoxton.SR11</spring-cloud.version>
     </properties>
     <dependencies>

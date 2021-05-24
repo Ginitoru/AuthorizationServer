@@ -1,16 +1,15 @@
-package com.iordache.entities;
+package com.iordache.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.lang.annotation.Target;
 import java.util.Objects;
+
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -30,6 +29,9 @@ public class User {
 
     private String email;
 
+
+    public User() {
+    }
 
     @Override
     public boolean equals(Object o) {
