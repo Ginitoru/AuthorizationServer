@@ -9,15 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>persistence</artifactId>
-    <dependencies>
-        <dependency>
-            <groupId>com.iordache</groupId>
-            <artifactId>domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
+    <artifactId>security</artifactId>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>

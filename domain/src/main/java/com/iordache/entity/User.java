@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Objects;
 
-
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -29,9 +29,6 @@ public class User {
 
     private String email;
 
-
-    public User() {
-    }
 
     @Override
     public boolean equals(Object o) {
