@@ -4,11 +4,14 @@ import com.iordache.entity.User;
 import com.iordache.persistence.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
 @AllArgsConstructor
+@Transactional(propagation = Propagation.MANDATORY)
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
