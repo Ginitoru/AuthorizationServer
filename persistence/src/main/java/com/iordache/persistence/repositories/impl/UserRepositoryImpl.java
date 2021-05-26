@@ -26,7 +26,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findUserByUsername(String username){
-        String jpql = "SELECT u FROM User u WHERE u.username =: username";
+        String jpql = "SELECT u FROM User u JOIN FETCH u.roles WHERE u.username =: username";
 
         return entityManager.createQuery(jpql, User.class)
                             .setParameter("username", username)
@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findUserByEmail(String email){
-        String jpql = "SELECT u FROM User u WHERE u.email =: email";
+        String jpql = "SELECT u FROM User u JOIN FETCH u.roles WHERE u.email =: email";
 
         return entityManager.createQuery(jpql, User.class)
                             .setParameter("email", email)
@@ -48,7 +48,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findUserByPhoneNumber(String phoneNumber){
-        String jpql = "SELECT u FROM User u WHERE u.phoneNumber =: phoneNumber";
+        String jpql = "SELECT u FROM User u JOIN FETCH u.roles WHERE u.phoneNumber =: phoneNumber";
 
         return entityManager.createQuery(jpql, User.class)
                             .setParameter("phoneNumber", phoneNumber)
