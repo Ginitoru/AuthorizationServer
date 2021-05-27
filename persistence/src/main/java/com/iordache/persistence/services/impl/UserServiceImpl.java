@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
 
-        if(usernameOrEMailOrPhoneNumber.contains("@")){
+        if(usernameOrEMailOrPhoneNumber.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")){
             User user = userRepository.findUserByEmail(usernameOrEMailOrPhoneNumber)
                                       .orElseThrow(() -> new UsernameNotFoundException("User not found by email"));
 

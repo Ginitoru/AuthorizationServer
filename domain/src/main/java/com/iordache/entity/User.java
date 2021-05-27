@@ -1,6 +1,6 @@
 package com.iordache.entity;
 
-import com.iordache.roles.Roles;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,7 +35,7 @@ public class User {
     private String email;
 
     @ElementCollection
-    private Set<Roles> roles = new HashSet<>();
+    private Set<String> roles = new HashSet<>();
 
 
     @Override
