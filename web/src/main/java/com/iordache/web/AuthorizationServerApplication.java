@@ -1,5 +1,6 @@
 package com.iordache.web;
 
+import com.iordache.security.config.AuthorizationServerConfig;
 import com.iordache.security.config.WebSecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,7 @@ import org.springframework.context.annotation.Import;
 @SpringBootApplication
 @EntityScan(basePackages = {"com.iordache.*"})
 @ComponentScan(basePackages = {"com.iordache.persistence.*", "com.iordache.web.*"}) //pt ca nu scaneaza automat modulele de componente
-@Import(WebSecurityConfig.class) //ca sa le vad mai bine
+@Import({WebSecurityConfig.class, AuthorizationServerConfig.class}) //ca sa le vad mai bine
 public class AuthorizationServerApplication {
 
     public static void main(String[] args) {
