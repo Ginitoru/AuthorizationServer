@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
 
-        if(usernameOrEMailOrPhoneNumber.matches("^[0-9]$")){
+        if(usernameOrEMailOrPhoneNumber.matches("[0-9]+")){
             User user = userRepository.findUserByPhoneNumber(usernameOrEMailOrPhoneNumber)
                                       .orElseThrow(() -> new UsernameNotFoundException("User not found by phoneNumber"));
 
