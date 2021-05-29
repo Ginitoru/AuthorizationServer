@@ -3,7 +3,7 @@ package com.iordache.security.config;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 @AllArgsConstructor
 @Configuration
@@ -26,7 +27,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.passwordEncoder(NoOpPasswordEncoder.getInstance());
+        security.passwordEncoder(NoOpPasswordEncoder.getInstance())
+                .tokenKeyAccess("isAuthenticated()");                                 //ca sa obtinem cheia publica trebuie sa ne autentificam cu clientul
         super.configure(security);
     }
 
@@ -39,19 +41,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret("secret1")
                 .scopes("read")
                 .authorizedGrantTypes("authorization_code", "refresh_token")
-                .redirectUris("http://localhost:9090");
+                .redirectUris("http://localhost:9090");                              //nu exista -> folosit ca sa luat codul de autorizare
     }
 
 
     @Bean
     public TokenStore tokenStore(){
-        var tokenStore = new JwtTokenStore(converter());
+        var tokenStore = new JwtTokenStore(converter());                               //acum folosim JWT
         return tokenStore;
     }
 
     @Bean
     public JwtAccessTokenConverter converter(){
-        return new JwtAccessTokenConverter();
+       var converter = new JwtAccessTokenConverter();
+
+       ClassPathResource getKey = new ClassPathResource("key_store.jks");                //din fisierula asta luam public key
+       char [] password = "gini123".toCharArray();                                       // parola la fisierul de mai sus
+
+        KeyStoreKeyFactory storeKeyFactory = new KeyStoreKeyFactory(getKey, password);   //bagam fisierul si parola
+
+        converter.setKeyPair(storeKeyFactory.getKeyPair("gini"));                   // gini -> alias-ul cand am creat fisierul ce contine cheile
+
+        return converter;
+
     }
 
     @Override
