@@ -30,13 +30,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         super.configure(security);
     }
 
+  //  http://localhost:8080/oauth/authorize?response_type=code&client_id=client1&scope=read
+  //  http://localhost:8080/oauth/token?grant_type=authorization_code&scope=read&code=.....codul pt a obtine token-ul
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("client1")
                 .secret("secret1")
                 .scopes("read")
-                .authorizedGrantTypes("password", "refresh_token");
+                .authorizedGrantTypes("authorization_code", "refresh_token")
+                .redirectUris("http://localhost:9090");
     }
 
 
