@@ -19,6 +19,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin();
         http.authorizeRequests()
                 .mvcMatchers("/app/**").permitAll();
+
+        super.configure(http);
+
     }
 
 

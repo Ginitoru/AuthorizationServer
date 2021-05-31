@@ -28,8 +28,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .tokenKeyAccess("isAuthenticated()");                                 //ca sa obtinem cheia publica trebuie sa ne autentificam cu clientul
-        super.configure(security);
+                .tokenKeyAccess("permitAll()");                                 //ca sa obtinem cheia publica trebuie sa ne autentificam cu clientul
+      //  super.configure(security);
     }
 
   //  http://localhost:8080/oauth/authorize?response_type=code&client_id=client1&scope=read
@@ -41,8 +41,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret("secret1")
                 .scopes("read")
                 .authorizedGrantTypes("authorization_code", "refresh_token")
-                .redirectUris("http://localhost:9090");                              //nu exista -> folosit ca sa luat codul de autorizare
-    }
+                .redirectUris("http://localhost:9090")                                 //nu exista -> folosit ca sa luat codul de autorizare
+            .and()
+                .withClient("resourceServer")
+                .secret("12345");
+}
 
 
     @Bean
@@ -51,20 +54,34 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return tokenStore;
     }
 
+//    @Bean
+//    public JwtAccessTokenConverter converter(){
+//       var converter = new JwtAccessTokenConverter();
+//
+//       ClassPathResource getKey = new ClassPathResource("key_store.jks");                //din fisierula asta luam public key
+//       char [] password = "gini123".toCharArray();                                       // parola la fisierul de mai sus
+//
+//        KeyStoreKeyFactory storeKeyFactory = new KeyStoreKeyFactory(getKey, password);   //bagam fisierul si parola
+//
+//        converter.setKeyPair(storeKeyFactory.getKeyPair("gini"));                   // gini -> alias-ul cand am creat fisierul ce contine cheile
+//
+//        return converter;
+//
+//    }
+
     @Bean
-    public JwtAccessTokenConverter converter(){
-       var converter = new JwtAccessTokenConverter();
+    public JwtAccessTokenConverter converter(){   //ne trebuie un converter pentru JWT
+        var c = new JwtAccessTokenConverter();
 
-       ClassPathResource getKey = new ClassPathResource("key_store.jks");                //din fisierula asta luam public key
-       char [] password = "gini123".toCharArray();                                       // parola la fisierul de mai sus
+        c.setSigningKey("sdfasdfasfasdfadsfasdfasdfadsfasdfasdfasdfasdfasdf");                //cheia de semnatura
 
-        KeyStoreKeyFactory storeKeyFactory = new KeyStoreKeyFactory(getKey, password);   //bagam fisierul si parola
 
-        converter.setKeyPair(storeKeyFactory.getKeyPair("gini"));                   // gini -> alias-ul cand am creat fisierul ce contine cheile
+        return c;
 
-        return converter;
 
     }
+
+
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
