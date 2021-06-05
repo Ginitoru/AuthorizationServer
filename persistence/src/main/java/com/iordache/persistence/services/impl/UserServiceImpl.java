@@ -1,6 +1,8 @@
 package com.iordache.persistence.services.impl;
 
 import com.iordache.entity.User;
+import com.iordache.exceptions.errors.UserAlreadyExists;
+import com.iordache.exceptions.errors.UserNotFoundException;
 import com.iordache.persistence.repositories.UserRepository;
 import com.iordache.persistence.services.UserService;
 import com.iordache.securityUser.SecurityUser;
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
            return;
        }
 
-       throw  new RuntimeException("User already exists");
+       throw  new UserAlreadyExists("User already exists");
 
     }
 
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public User findUserByUserName(String username){
         return userRepository.findUserByUsername(username)
-                             .orElseThrow(() -> new RuntimeException("User not found by username"));
+                             .orElseThrow(() -> new UserNotFoundException("User not found by username"));
     }
 
 
@@ -55,7 +57,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public User findUserByEmail(String email){
         return userRepository.findUserByEmail(email)
-                             .orElseThrow(() -> new RuntimeException("User not found by email"));
+                             .orElseThrow(() -> new UserNotFoundException("User not found by email"));
     }
 
 
@@ -63,7 +65,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public User findUserByPhoneNumber(String phoneNumber){
         return userRepository.findUserByPhoneNumber(phoneNumber)
-                             .orElseThrow(() -> new RuntimeException("User not found by phoneNumber"));
+                             .orElseThrow(() -> new UserNotFoundException("User not found by phoneNumber"));
     }
 
 
@@ -75,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if(usernameOrEMailOrPhoneNumber.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")){
             User user = userRepository.findUserByEmail(usernameOrEMailOrPhoneNumber)
-                                      .orElseThrow(() -> new UsernameNotFoundException("User not found by email"));
+                                      .orElseThrow(() -> new UserNotFoundException("User not found by email"));
 
             return new SecurityUser(user);
         }
@@ -83,14 +85,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         if(usernameOrEMailOrPhoneNumber.matches("[0-9]+")){
             User user = userRepository.findUserByPhoneNumber(usernameOrEMailOrPhoneNumber)
-                                      .orElseThrow(() -> new UsernameNotFoundException("User not found by phoneNumber"));
+                                      .orElseThrow(() -> new UserNotFoundException("User not found by phoneNumber"));
 
             return new SecurityUser(user);
         }
 
 
         User user = userRepository.findUserByUsername(usernameOrEMailOrPhoneNumber)
-                                  .orElseThrow(() -> new UsernameNotFoundException("User not found by username"));
+                                  .orElseThrow(() -> new UserNotFoundException("User not found by username"));
 
         return new SecurityUser(user);
 
