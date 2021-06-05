@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -23,6 +24,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     private final AuthenticationManager authenticationManager;
+    private final ClientDetailsService clientDetailsService;
 
 
     @Override
@@ -36,15 +38,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
   //  http://localhost:8080/oauth/token?grant_type=authorization_code&scope=read&code=.....codul pt a obtine token-ul
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("client1")
-                .secret("secret1")
-                .scopes("read")
-                .authorizedGrantTypes("authorization_code", "refresh_token")
-                .redirectUris("http://localhost:9090")                                 //nu exista -> folosit ca sa luat codul de autorizare
-            .and()
-                .withClient("resourceServer")
-                .secret("12345");
+
+        clients.withClientDetails(clientDetailsService);
+//        clients.inMemory()
+//                .withClient("client1")
+//                .secret("secret1")
+//                .scopes("read")
+//                .authorizedGrantTypes("authorization_code", "refresh_token")
+//                .redirectUris("http://localhost:9090")                                 //nu exista -> folosit ca sa luat codul de autorizare
+//            .and()
+//                .withClient("resourceServer")
+//                .secret("12345");
 }
 
 

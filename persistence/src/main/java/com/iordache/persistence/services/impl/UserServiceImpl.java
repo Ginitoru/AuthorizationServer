@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                                      () -> create(user));
 
     }
-    
+
                     //method 2
     private void create(User user){
         String encodedPassword = passwordEncoder.encode(user.getPassword());
