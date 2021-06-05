@@ -54,7 +54,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return tokenStore;
     }
 
-//    @Bean
+//    @Bean  //NU MERGE
 //    public JwtAccessTokenConverter converter(){
 //       var converter = new JwtAccessTokenConverter();
 //
@@ -74,10 +74,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         var c = new JwtAccessTokenConverter();
 
         c.setSigningKey("sdfasdfasfasdfadsfasdfasdfadsfasdfasdfasdfasdfasdf");                //cheia de semnatura
-
-
         return c;
-
 
     }
 

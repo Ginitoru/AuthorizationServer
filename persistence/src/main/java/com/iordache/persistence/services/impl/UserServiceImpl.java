@@ -5,6 +5,7 @@ import com.iordache.exceptions.errors.UserAlreadyExists;
 import com.iordache.exceptions.errors.UserNotFoundException;
 import com.iordache.persistence.repositories.UserRepository;
 import com.iordache.persistence.services.UserService;
+import com.iordache.persistence.utility.VerifyIfIt;
 import com.iordache.securityUser.SecurityUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
 
 
     @Override
@@ -75,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
 
-        if(usernameOrEMailOrPhoneNumber.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")){
+        if(VerifyIfIt.isEmail(usernameOrEMailOrPhoneNumber)){
             User user = userRepository.findUserByEmail(usernameOrEMailOrPhoneNumber)
                                       .orElseThrow(() -> new UserNotFoundException("User not found by email"));
 
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
 
-        if(usernameOrEMailOrPhoneNumber.matches("[0-9]+")){
+        if(VerifyIfIt.isPhoneNumber(usernameOrEMailOrPhoneNumber)){
             User user = userRepository.findUserByPhoneNumber(usernameOrEMailOrPhoneNumber)
                                       .orElseThrow(() -> new UserNotFoundException("User not found by phoneNumber"));
 
