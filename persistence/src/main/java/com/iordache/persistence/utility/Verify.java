@@ -1,6 +1,6 @@
 package com.iordache.persistence.utility;
 
-public class VerifyIfIt {
+public class Verify {
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
     private static final String PHONE_NUMBER_REGEX = "[0-9]+";

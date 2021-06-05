@@ -5,7 +5,7 @@ import com.iordache.exceptions.errors.UserAlreadyExists;
 import com.iordache.exceptions.errors.UserNotFoundException;
 import com.iordache.persistence.repositories.UserRepository;
 import com.iordache.persistence.services.UserService;
-import com.iordache.persistence.utility.VerifyIfIt;
+import com.iordache.persistence.utility.Verify;
 import com.iordache.securityUser.SecurityUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -27,24 +25,27 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    @Transactional
+    @Transactional  //method 1
     public void createUser(User user){
 
-       Optional<User> optUser = userRepository.findUserByEmail(user.getEmail());
-
-       if(optUser.isEmpty()){
-
-           user.setPassword(
-                            passwordEncoder.encode(user.getPassword())
-           );
-
-           userRepository.createUser(user);
-           return;
-       }
-
-       throw  new UserAlreadyExists("User already exists");
+       userRepository.findUserByEmail(user.getEmail())
+                     .ifPresentOrElse(theUser -> throwsException(),
+                                     () -> create(user));
 
     }
+    
+                    //method 2
+    private void create(User user){
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        userRepository.createUser(user);
+    }
+
+                    //metod 3
+    private void throwsException(){
+        throw  new UserAlreadyExists("User already exists");
+    }
+
 
 
     @Override
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
 
-        if(VerifyIfIt.isEmail(usernameOrEMailOrPhoneNumber)){
+        if(Verify.isEmail(usernameOrEMailOrPhoneNumber)){
             User user = userRepository.findUserByEmail(usernameOrEMailOrPhoneNumber)
                                       .orElseThrow(() -> new UserNotFoundException("User not found by email"));
 
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
 
-        if(VerifyIfIt.isPhoneNumber(usernameOrEMailOrPhoneNumber)){
+        if(Verify.isPhoneNumber(usernameOrEMailOrPhoneNumber)){
             User user = userRepository.findUserByPhoneNumber(usernameOrEMailOrPhoneNumber)
                                       .orElseThrow(() -> new UserNotFoundException("User not found by phoneNumber"));
 
