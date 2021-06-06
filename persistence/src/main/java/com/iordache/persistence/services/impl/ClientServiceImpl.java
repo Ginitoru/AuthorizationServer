@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
@@ -21,6 +22,7 @@ public class ClientServiceImpl implements ClientDetailsService, ClientService {
 
 
     private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -40,13 +42,20 @@ public class ClientServiceImpl implements ClientDetailsService, ClientService {
     public void createClient(Client client){
         clientRepository.findClientByClientId(client.getClientId())
                         .ifPresentOrElse(theClient -> throwsException(),
-                                        () -> clientRepository.save(client));
+                                        () -> create(client));
 
 
     }
 
     private void throwsException(){
         throw new RuntimeException();
+    }
+
+    private void create(Client client){
+        String encodedSecret = passwordEncoder.encode(client.getSecret());
+        client.setSecret(encodedSecret);
+
+        clientRepository.save(client);
     }
 
 }
