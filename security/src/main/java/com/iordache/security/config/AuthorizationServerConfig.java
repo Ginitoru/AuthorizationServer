@@ -1,5 +1,6 @@
 package com.iordache.security.config;
 
+import com.iordache.persistence.services.impl.ClientServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,31 +25,22 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     private final AuthenticationManager authenticationManager;
-    private final ClientDetailsService clientDetailsService;
+    private final ClientServiceImpl clientDetailsService; // in nici un caz nu se injecteaza ClientDetailsService -> StackOverflow -> https://stackoverflow.com/questions/31798631/stackoverflowerror-in-spring-oauth2-with-custom-clientdetailsservice
 
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .tokenKeyAccess("permitAll()");                                 //ca sa obtinem cheia publica trebuie sa ne autentificam cu clientul
-      //  super.configure(security);
+        super.configure(security);
     }
 
   //  http://localhost:8080/oauth/authorize?response_type=code&client_id=client1&scope=read
   //  http://localhost:8080/oauth/token?grant_type=authorization_code&scope=read&code=.....codul pt a obtine token-ul
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
         clients.withClientDetails(clientDetailsService);
-//        clients.inMemory()
-//                .withClient("client1")
-//                .secret("secret1")
-//                .scopes("read")
-//                .authorizedGrantTypes("authorization_code", "refresh_token")
-//                .redirectUris("http://localhost:9090")                                 //nu exista -> folosit ca sa luat codul de autorizare
-//            .and()
-//                .withClient("resourceServer")
-//                .secret("12345");
+
 }
 
 
@@ -57,6 +49,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         var tokenStore = new JwtTokenStore(converter());                               //acum folosim JWT
         return tokenStore;
     }
+
+//    @Bean
+//    public ClientDetailsService cvc(){
+//        return new ClientServiceImpl();
+//    }
+
 
 //    @Bean  //NU MERGE
 //    public JwtAccessTokenConverter converter(){
@@ -75,10 +73,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public JwtAccessTokenConverter converter(){   //ne trebuie un converter pentru JWT
-        var c = new JwtAccessTokenConverter();
+        var conv = new JwtAccessTokenConverter();
 
-        c.setSigningKey("sdfasdfasfasdfadsfasdfasdfadsfasdfasdfasdfasdfasdf");                //cheia de semnatura
-        return c;
+        conv.setSigningKey("sdfasdfasfasdfadsfasdfasdfadsfasdfasdfasdfasdfasdf");                //cheia de semnatura
+        return conv;
 
     }
 

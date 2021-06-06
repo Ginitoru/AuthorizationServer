@@ -1,11 +1,13 @@
 package com.iordache.securityClient;
 
+
 import com.iordache.entity.Client;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,22 +43,22 @@ public class SecurityClient implements ClientDetails {
 
     @Override
     public Set<String> getScope() {
-        return null;
+        return Set.of(client.getScope());
     }
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return null;
+        return Set.of(client.getGrantType());
     }
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return null;
+        return Set.of("http://localhost:9090");
     }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(()->client.getGrantType());
     }
 
     @Override

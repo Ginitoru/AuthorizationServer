@@ -20,6 +20,7 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+
     private String clientId;
     private String grantType;
     private String scope;
@@ -42,9 +43,11 @@ public class Client {
     @Override
     public String toString() {
         return "Client{" +
-                "clientId='" + clientId + '\'' +
+                "id=" + id +
+                ", clientId='" + clientId + '\'' +
                 ", grantType='" + grantType + '\'' +
                 ", scope='" + scope + '\'' +
+                ", secret='" + secret + '\'' +
                 '}';
     }
 }
