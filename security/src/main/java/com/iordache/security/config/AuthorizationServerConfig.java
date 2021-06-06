@@ -1,10 +1,9 @@
 package com.iordache.security.config;
 
-import com.iordache.persistence.services.impl.ClientServiceImpl;
+
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -16,7 +15,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
 
 @AllArgsConstructor
 @Configuration
@@ -25,8 +24,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     private final AuthenticationManager authenticationManager;
-    private final ClientServiceImpl clientDetailsService; // in nici un caz nu se injecteaza ClientDetailsService -> StackOverflow -> https://stackoverflow.com/questions/31798631/stackoverflowerror-in-spring-oauth2-with-custom-clientdetailsservice
-
+    private final ClientDetailsService clientDetailsService; // in nici un caz nu se injecteaza ClientDetailsService -> StackOverflow -> https://stackoverflow.com/questions/31798631/stackoverflowerror-in-spring-oauth2-with-custom-clientdetailsservice
+                                                             //sau mai e varianta in care facem @Primary implementarea interfeteti deoarece spring mai are definit un ClientDetailsService -> stackOverflow
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {

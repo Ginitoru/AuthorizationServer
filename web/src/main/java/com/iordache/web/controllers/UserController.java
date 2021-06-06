@@ -33,13 +33,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/client/{client}")
-    public void show(@PathVariable String client){
-        clientRepository.findClientByClientId(client)
-                        .ifPresent(c-> System.out.println(new SecurityClient(c).getRegisteredRedirectUri().toString()));
 
-
-    }
 
 
 

@@ -2,24 +2,26 @@ package com.iordache.web.controllers;
 
 import com.iordache.entity.Client;
 import com.iordache.persistence.repositories.ClientRepository;
+import com.iordache.persistence.services.ClientService;
+import com.iordache.securityClient.SecurityClient;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/server")
 public class ClientController {
 
-    private final ClientRepository clientRepository;
+    private final ClientService clientService;
 
 
-    @PostMapping("/client")
+
+    @GetMapping("/client")
     public void createClient(@RequestBody Client client){
 
-        clientRepository.save(client);
+        clientService.createClient(client);
 
     }
+
 }
