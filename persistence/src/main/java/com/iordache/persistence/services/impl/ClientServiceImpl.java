@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -38,7 +39,8 @@ public class ClientServiceImpl implements ClientDetailsService, ClientService {
     }
 
     @Override
-    @Transactional
+    @Transactional  //method 1
+    @PreAuthorize("hasRole('ADMIN')")
     public void createClient(Client client){
         clientRepository.findClientByClientId(client.getClientId())
                         .ifPresentOrElse(theClient -> throwsException(),
@@ -47,10 +49,12 @@ public class ClientServiceImpl implements ClientDetailsService, ClientService {
 
     }
 
+    //method 2
     private void throwsException(){
         throw new RuntimeException();
     }
 
+    //method 3
     private void create(Client client){
         String encodedSecret = passwordEncoder.encode(client.getSecret());
         client.setSecret(encodedSecret);
