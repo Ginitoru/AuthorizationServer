@@ -1,15 +1,13 @@
 package com.iordache.exceptions.message;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserErrorMessage {
+@Builder
+public class ErrorMessage {
 
     private int status;
     private String message;

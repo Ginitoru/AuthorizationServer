@@ -1,6 +1,7 @@
 package com.iordache.persistence.services.impl;
 
 import com.iordache.entity.Client;
+import com.iordache.exceptions.errors.ClientAlreadyExists;
 import com.iordache.persistence.repositories.ClientRepository;
 import com.iordache.persistence.services.ClientService;
 import com.iordache.securityClient.SecurityClient;
@@ -51,7 +52,7 @@ public class ClientServiceImpl implements ClientDetailsService, ClientService {
 
     //method 2
     private void throwsException(){
-        throw new RuntimeException();
+        throw new ClientAlreadyExists("ClientId already exists");
     }
 
     //method 3
