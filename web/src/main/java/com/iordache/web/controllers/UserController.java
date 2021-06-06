@@ -19,7 +19,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserDetailsService userDetailsService;
-    private final ClientRepository clientRepository;
+
 
     @GetMapping("/user")
     public User createUser(@RequestBody User user){

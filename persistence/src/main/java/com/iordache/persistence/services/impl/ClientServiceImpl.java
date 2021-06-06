@@ -22,6 +22,7 @@ public class ClientServiceImpl implements ClientDetailsService, ClientService {
 
     private final ClientRepository clientRepository;
 
+
     @Override
     @Transactional
     public ClientDetails loadClientByClientId(String clientId){

@@ -19,8 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
 
 
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional  //method 1
     public void createUser(User user){
 
-       userRepository.findUserByEmail(user.getEmail())
+        userRepository.findUserByEmail(user.getEmail())
                      .ifPresentOrElse(theUser -> throwsException(),
                                      () -> create(user));
 
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private void create(User user){
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        userRepository.createUser(user);
+        userRepository.save(user);
     }
 
                     //metod 3
