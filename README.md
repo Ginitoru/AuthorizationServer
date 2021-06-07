@@ -1,7 +1,7 @@
 This app is an Authorization Server config for the Resource Server app found here:
 https://github.com/Ginitoru/ResourceServer.git.
  
-1.Framework used: Spring with SpringBoot 2.3.11.
+ 1.Framework used: Spring with SpringBoot 2.3.11.
  
 2. Dependecies: CloudOauth,  Spring JPA, Spring web, Spring security, mysql driver, lombok.
  
