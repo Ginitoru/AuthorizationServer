@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClientController {
 
     private final ClientService clientService;
-
-
+    
 
     @GetMapping("/client")
     public void createClient(@RequestBody Client client){
