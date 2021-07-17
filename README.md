@@ -3,7 +3,7 @@ https://github.com/Ginitoru/ResourceServer.git.
 
 1.Framework used: Spring with SpringBoot 2.3.11.
 
-2. Dependecies: CloudOauth,  Spring JPA, Spring web, Spring security, mysql driver, lombok.
+2. Dependecies: CloudOauth,  Spring Data JPA, Spring web, Spring security, mysql driver, lombok.
 
 4. Functionality: 
 
